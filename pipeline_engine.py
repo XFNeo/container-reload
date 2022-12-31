@@ -85,6 +85,7 @@ class RunDockerContainer:
         self.kvargs = kvargs
 
     def execute(self, ctx):
+        ctx.log.info("Create a new container.")
         ctx.params["new_container"] = ctx.client.containers.create(**self.kvargs)
         ctx.log.info(f"New container has been created. Starting: {ctx.params['new_container']}")
         ctx.params["new_container"].start()
@@ -92,7 +93,7 @@ class RunDockerContainer:
         return ctx
     def unexecute(self, ctx):
         if ctx.params.get("new_container") is None:
-            return
+            return ctx
         container = ctx.params["new_container"]
         ctx.log.info(f"Delete container: {container}")
         container.remove(force=True)
