@@ -33,7 +33,8 @@ def reload_image():
                 client=docker_client,
                 skip_pipeline=False,
                 log=logging.getLogger("pipeline"),
-                params={}),
+                params={}
+            ),
             CompareNewDockerImageWithExistingImages(new_image),
             PullDockerImage(new_image),
             CollectRunningContainers(config.get('filter', 'label')),
@@ -45,11 +46,13 @@ def reload_image():
                 restart_policy=dict(config.items('container restart policy')),
                 network=config.get('container options', 'network'),
                 mem_limit=config.get('container options', 'mem_limit'),
-                nano_cpus=config.getint('container options', 'nano_cpus')),
+                # nano_cpus=config.getint('container options', 'nano_cpus')
+            ),
             WaitContainerReadiness(
                 check_command=config.get('container healthcheck', 'check_command'),
                 check_interval=config.getint('container healthcheck', 'check_interval'),
-                retries=config.getint('container healthcheck', 'retries')),
+                retries=config.getint('container healthcheck', 'retries')
+            ),
             RemoveOldContainers(),
             RemoveOldImages(new_image)
         )
