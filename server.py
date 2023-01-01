@@ -8,8 +8,8 @@ from pipeline_engine import *
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.optionxform = lambda e: e
-config.read_dict({'env': os.environ})
 config.read('config.ini')
+config.read_dict({'env': os.environ})
 
 docker_client = docker.DockerClient(**dict(config.items('docker')))
 logging.basicConfig(level=logging.getLevelName(config.get('logging', 'level')))
