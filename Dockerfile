@@ -1,9 +1,12 @@
-FROM python:3.11-alpine
+FROM python:3.10-alpine
 
-RUN /usr/local/bin/pip3 install flask flask_httpauth docker waitress
+COPY requirements.txt /app/
+RUN /usr/local/bin/python3 -m pip install --upgrade pip && \
+    /usr/local/bin/pip3 install -r /app/requirements.txt
 
 COPY pipeline_engine.py /app/
 COPY server.py /app/
+COPY reload_tasks.py /app/
 COPY config.ini /app/
 
 WORKDIR /app
